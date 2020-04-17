@@ -8,8 +8,6 @@ const ExtractJwt = require("passport-jwt").ExtractJwt;
 const User = require("../database/models/user.model");
 const { APP_SECRET } = process.env;
 
-/* STRATEGIES */
-
 passport.use(
   new LocalStrategy(
     {
@@ -19,18 +17,22 @@ passport.use(
     },
     (email, password, done) => {
       User.findOne(email, (err, foundUser) => {
-        err
-          ? err.kind === "not_found"
-            ? done(null, false, {
-                message: "Couldn't find user with this email",
-              })
-            : done(null, false, { message: "Error retrieving user" })
-          : bcrypt
-              .compare(password, foundUser.password)
-              .then((isUser) => isUser && done(null, foundUser))
-              .catch((compareErr) =>
-                console.error(`Compare error: ${compareErr}`)
-              );
+        if (err) {
+          if (err.kind === "not_found") {
+            done(null, false, { message: "Can't find user with this email!" });
+          } else {
+            done(null, false, {
+              message: "Connection error when retrieving the user",
+            });
+          }
+        } else {
+          bcrypt
+            .compare(password, foundUser.password)
+            .then((isUser) => isUser && done(null, foundUser))
+            .catch((compareErr) =>
+              console.error(`Compare error: ${compareErr}`)
+            );
+        }
       });
     }
   )
@@ -44,7 +46,7 @@ passport.use(
     },
     (jwtPayload, done) => {
       User.findOne(jwtPayload.email, (err, foundUser) => {
-        err ? console.error(err) : done(null, foundUser);
+        err ? console.error(error) : done(null, foundUser);
       });
     }
   )

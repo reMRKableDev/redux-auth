@@ -14,19 +14,20 @@ router.post("/", (req, res) => {
   bcrypt
     .hash(newUser.password, 10)
     .then((hashedPassword) => {
+      // set hashed password
       newUser.password = hashedPassword;
 
+      // create new user
       User.create(newUser, (error, data) => {
+        // if error --> return 500 status else return data
         error
-          ? res.status(500).send({
-              message: "A user with this email already exists!",
-            })
+          ? res
+              .status(500)
+              .send({ message: "A user with this email already exists!" })
           : res.status(200).send(data);
       });
     })
-    .catch((hashError) =>
-      console.error(`Something went wrong when hashing: ${hashError}`)
-    );
+    .catch((hashErr) => console.error(`Hash Error: ${hashErr}`));
 });
 
 module.exports = router;

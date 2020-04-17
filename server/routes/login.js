@@ -11,14 +11,17 @@ router.post("/", (req, res, next) => {
     if (!user) {
       res.status(400).send(info);
     } else {
+      // token
       const token = jwt.sign(JSON.stringify(user), APP_SECRET);
 
+      //secure user
       const secureUser = {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
       };
 
+      // send back info to client
       res.status(200).send({ secureUser, token });
     }
   })(req, res, next);

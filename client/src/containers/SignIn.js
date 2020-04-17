@@ -21,11 +21,13 @@ class SignIn extends Component {
     })
       .then((res) => res.json())
       .then((res) => {
+        // sending data to store via an action
         this.props.dispatch({
           type: "CREATE_SESSION",
           user: res.secureUser,
           token: res.token,
         });
+        
         this.props.history.push("/profile");
       })
       .catch((err) => console.error(err));

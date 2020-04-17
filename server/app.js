@@ -19,6 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 /* ROUTE SETTERS */
+app.get("/", (req, res) => res.status(200).send("Hello"));
 app.use("/register", registerRouter);
 app.use("/login", loginRouter);
 app.use("/profile", profileRouter);

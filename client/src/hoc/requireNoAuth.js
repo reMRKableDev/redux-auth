@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 
 export default function requiredAuth(ComposedComponent) {
   class NoAuthentication extends Component {
-    componentWillMount() {
+    componentDidMount() {
       if (this.props.authenticated) this.props.history.push("/profile");
     }
-    componentWillUpdate() {
+    componentDidUpdate() {
       if (this.props.authenticated) this.props.history.push("/profile");
     }
     render() {
