@@ -1,5 +1,14 @@
 {
   "extends": [
     "config:base"
+  ],
+  "automerge": true,
+  "automergeType": "branch", 
+  "automergeStrategy": "squash",
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["patch", "minor"],
+      "automerge": true
+    }
   ]
 }
